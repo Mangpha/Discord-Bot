@@ -54,4 +54,10 @@ async def 한강물온도(ctx):
     await ctx.send(embed=embed)
 
 
+@bot.command(help="Play Game")
+async def signin(ctx):
+    embed = discord.Embed(title=ctx.author.name, description=ctx.author.id)
+    await ctx.send(embed=embed)
+
+
 bot.run(token)

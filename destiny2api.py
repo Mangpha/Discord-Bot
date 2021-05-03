@@ -64,7 +64,7 @@ def Destiny2GetProfileUrl(MembershipId, MembershipType, components):
 prof = destiny2_api_pub(SearchDestinyPlayerUrl("눙귀", "steam"), api_key)
 prof = destiny2_api_pub(
     Destiny2GetProfileUrl(
-        prof.data[0]["membershipId"], str(prof.data[0]["membershipType"]), "100"
+        prof.data[0]["membershipId"], str(prof.data[0]["membershipType"]), "200"
     ),
     api_key,
 )
