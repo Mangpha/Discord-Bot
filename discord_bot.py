@@ -64,19 +64,37 @@ async def 소라고동님(ctx, *, kwargs):
 
 
 @bot.command(help="Play Game")
-async def signin(ctx):
+async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
     if UserId not in user_db:
         dic = {UserId: {"username": UserName, "level": 1, "money": 10000, "exp": 0}}
         user_db.update(dic)
-        embed = discord.Embed(title="User Detail", description=user_db[UserId])
-        embed.add_field(name="Level", value=user_db[UserId]["level"], inline=True)
-        embed.add_field(name="Money", value=user_db[UserId]["money"], inline=True)
-        embed.add_field(name="Exp", value=user_db[UserId]["exp"], inline=True)
+        embed = discord.Embed(title="가입완료", description=user_db[UserId]["username"])
+        embed.add_field(name="레벨", value=user_db[UserId]["level"], inline=True)
+        embed.add_field(name="보유 금액", value=user_db[UserId]["money"], inline=True)
+        embed.add_field(name="경험치", value=user_db[UserId]["exp"], inline=True)
         await ctx.send(embed=embed)
     else:
-        embed = discord.Embed(title="Failed", description="User Valid")
+        embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
+        await ctx.send(embed=embed)
+
+
+@bot.command(help="My Profile")
+async def 내정보(ctx):
+    UserId = ctx.author.id
+    if UserId in user_db:
+        username = user_db[UserId]["username"]
+        level = user_db[UserId]["level"]
+        money = user_db[UserId]["money"]
+        exp = user_db[UserId]["exp"]
+        embed = discord.Embed(title="유저 정보", description=username)
+        embed.add_field(name="레벨", value=level, inline=True)
+        embed.add_field(name="보유 금액", value=money, inline=True)
+        embed.add_field(name="경험치", value=exp, inline=True)
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(title="오류", description="가입되지 않은 유저입니다.")
         await ctx.send(embed=embed)
 
 
