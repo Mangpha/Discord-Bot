@@ -1,7 +1,8 @@
 import requests
 import json
+from APITOKEN import bungie_token
 
-api_key = "d744da994a9446448750499bbf648bce"
+api_key = bungie_token()
 BASE_URL = "https://bungie.net/Platform/Destiny2/"
 
 membership_types = {
@@ -30,10 +31,10 @@ class ResponseSum:
                     self.data = result['Response']
                 except Exception:
                     print(
-                        "ResponseSum: 200 status and error code 1(Success), but there was no data in result['Response']"
+                        "No data in result['Response']"
                     )
                     print(
-                        f"Exception: {Exception}\nType: {Exception.__class__.__name__}"
+                        f"Exception: {Exception}"
                     )
 
             else:

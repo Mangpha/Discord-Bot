@@ -3,8 +3,9 @@ from discord.ext import commands
 import random
 import requests
 import json
+from APITOKEN import discord_token
 
-token = "ODIxOTQxMjA1MTEzMTEwNTM5.YFLCZg.KFq_5lDpbznJGY6cr3JkDhbzvKE"
+token = discord_token()
 
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
