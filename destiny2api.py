@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+
 import APITOKEN
 
 api_key = os.getenv("BUNGIE_TOKEN")
@@ -61,7 +62,14 @@ def Destiny2GetProfileUrl(MembershipId, MembershipType, components):
     )
 
 
-prof = destiny2_api_pub(SearchDestinyPlayerUrl("눙귀", "steam"), api_key)
+"""
+def ResultFunc(Username, Platform):
+    membership_type = membership_types[Platform]
+    res = destiny2_api_pub(SearchDestinyPlayerUrl(Username, Platform), api_key)
+    res = destiny2_api_pub(Destiny2GetProfileUrl(res.data[0]['membershipId'], str(res.data[0]['membershipType']), "200"), apikey)
+"""
+
+prof = destiny2_api_pub(SearchDestinyPlayerUrl("Mangpha", "steam"), api_key)
 prof = destiny2_api_pub(
     Destiny2GetProfileUrl(
         prof.data[0]["membershipId"], str(prof.data[0]["membershipType"]), "200"

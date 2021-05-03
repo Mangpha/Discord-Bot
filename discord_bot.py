@@ -10,6 +10,8 @@ token = os.environ["DISCORD_TOKEN"]
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
 
+user_db = {}
+
 
 @bot.event
 async def on_ready():
@@ -54,10 +56,26 @@ async def 한강물온도(ctx):
     await ctx.send(embed=embed)
 
 
-@bot.command(help="Play Game")
-async def signin(ctx):
-    embed = discord.Embed(title=ctx.author.name, description=ctx.author.id)
+@bot.command(help="소라고동")
+async def 소라고동님(ctx, *args):
+    ans = random.choice(["yes", "no"])
+    embed = discord.Embed(title=args, description=ans, color=0xF3BB76)
     await ctx.send(embed=embed)
 
+
+"""
+@bot.command(help="Play Game")
+async def signin(ctx):
+    UserName = ctx.author.name
+    UserId = ctx.author.id
+    if UserId not in user_db:
+        dic = {
+            UserId: {
+                "username": UserName,
+                "money": 10000,
+                "exp": 0,
+            }
+        }
+"""
 
 bot.run(token)
