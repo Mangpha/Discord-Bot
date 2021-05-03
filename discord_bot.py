@@ -57,9 +57,9 @@ async def 한강물온도(ctx):
 
 
 @bot.command(help="소라고동")
-async def 소라고동님(ctx, **kwargs):
+async def 소라고동님(ctx, *, kwargs):
     ans = random.choice(["yes", "no"])
-    embed = discord.Embed(title=args, description=ans, color=0xF3BB76)
+    embed = discord.Embed(title=kwargs, description=ans, color=0xF3BB76)
     await ctx.send(embed=embed)
 
 
