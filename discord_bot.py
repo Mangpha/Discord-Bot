@@ -63,19 +63,21 @@ async def 소라고동님(ctx, *, kwargs):
     await ctx.send(embed=embed)
 
 
-"""
 @bot.command(help="Play Game")
 async def signin(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
     if UserId not in user_db:
-        dic = {
-            UserId: {
-                "username": UserName,
-                "money": 10000,
-                "exp": 0,
-            }
-        }
-"""
+        dic = {UserId: {"username": UserName, "level": 1, "money": 10000, "exp": 0}}
+        user_db.update(dic)
+        embed = discord.Embed(title="User Detail", description=user_db[UserId])
+        embed.add_field(name="Level", value=user_db[UserId]["level"], inline=True)
+        embed.add_field(name="Money", value=user_db[UserId]["money"], inline=True)
+        embed.add_field(name="Exp", value=user_db[UserId]["exp"], inline=True)
+        await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Failed", description="User Valid")
+        await ctx.send(embed=embed)
+
 
 bot.run(token)
