@@ -3,9 +3,10 @@ from discord.ext import commands
 import random
 import requests
 import json
-from APITOKEN import discord_token
+import os
+import APITOKEN
 
-token = discord_token()
+token = os.getenv("DISCORD_TOKEN")
 
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
@@ -15,11 +16,6 @@ bot = commands.Bot(command_prefix="!!")
 async def on_ready():
     print(bot.user.name)
     await bot.change_presence(status=discord.Status.online, activity=game)
-
-
-@bot.command(help="Print Hello")
-async def hello(ctx):
-    await ctx.send("Hello")
 
 
 @bot.command(help="데스티니 활동 랜덤 추천")
