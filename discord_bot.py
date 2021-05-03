@@ -4,9 +4,8 @@ import random
 import requests
 import json
 import os
-import APITOKEN
 
-token = os.getenv("DISCORD_TOKEN")
+token = os.environ["DISCORD_TOKEN"]
 
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
