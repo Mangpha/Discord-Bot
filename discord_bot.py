@@ -74,7 +74,7 @@ async def 소라고동님(ctx, *, kwargs):
     ]
     emoji = random.choice(emj_list)
     embed = discord.Embed(
-        title=kwargs, description=f"{emoji}{ans}{emoji}", color=0xF3BB76
+        title=kwargs, description=f"{emoji} {ans} {emoji}", color=0xF3BB76
     )
     await ctx.send(embed=embed)
 
