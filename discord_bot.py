@@ -4,10 +4,8 @@ import random
 import requests
 import json
 import os
-import mysql.connector
 import pyupbit
-from pytz import timezone
-from datetime import datetime
+from games.user_sql import signin, check_id, get_user
 
 token = os.environ["DISCORD_TOKEN"]
 
@@ -17,82 +15,6 @@ bot = commands.Bot(command_prefix="!!")
 
 def get_coin_price():
     return int(pyupbit.get_current_price("KRW-DOGE"))
-
-
-def db_connection():
-    sql_host = os.environ["SQL_HOST"]
-    sql_user = os.environ["SQL_USER"]
-    sql_passwd = os.environ["SQL_PASSWD"]
-    db_name = os.environ["DB_NAME"]
-    db_config = {
-        "host": sql_host,
-        "user": sql_user,
-        "password": sql_passwd,
-        "database": db_name,
-        "port": 3306,
-    }
-    return db_config
-
-
-def signin(userid, username):
-
-    """ Game Signin """
-
-    con = mysql.connector.connect(**db_connection())
-    curs = con.cursor()
-    now = datetime.now(timezone("Asia/Seoul")).strftime("%Y:%m:%d %H:%M:%S")
-    sql = (
-        "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
-        f"values (%s, %s, %s, %s, %s, %s, '{now}') ;"
-    )
-    curs.execute(
-        sql,
-        (
-            userid,
-            username,
-            1,
-            10000,
-            0,
-            0,
-        ),
-    )
-    con.commit()
-
-
-def check_id(userid):
-
-    """ Check ID """
-
-    con = mysql.connector.connect(**db_connection())
-    curs = con.cursor()
-    sql = "select exists(select * from discordapp where UserID = %s) ;"
-    curs.execute(sql, (userid,))
-    isDup = curs.fetchall()
-    if isDup[0][0] == 1:
-        # Exist
-        return bool(False)
-    else:
-        return bool(True)
-
-
-def get_user(userid):
-
-    """ Get User Data """
-
-    con = mysql.connector.connect(**db_connection())
-    curs = con.cursor()
-    sql = "select * from discordapp where UserID = %s ;"
-    curs.execute(sql, (userid,))
-    rows = curs.fetchall()
-    user_dic = {
-        "username": rows[0][1],
-        "level": rows[0][2],
-        "money": rows[0][3],
-        "exp": rows[0][4],
-        "lost_money": rows[0][5],
-        "signin_date": rows[0][6],
-    }
-    return user_dic
 
 
 @bot.event
@@ -202,22 +124,24 @@ async def 내정보(ctx):
         await ctx.send(embed=embed)
 
 
-@bot.command()
-async def 도지(ctx, option, *, money="0"):
-    if option:
-        if option == "조회":
-            coin_price = get_coin_price()
-            embed = discord.Embed(title="도지 코인", description="조회", color=0xC08282)
-            embed.add_field(name="가격", value=f":moneybag: {coin_price}")
-            await ctx.send(embed=embed)
+@bot.command(help="도지 코인 조회, 매수, 매도")
+async def 도지(ctx, option="도움", *, money="0"):
+    userid = ctx.message.author.id
 
-        if option == "매수":
-            embed = discord.Embed(
-                title="Preparing", description="preparing", color=0xC08282
-            )
-            await ctx.send(embed=embed)
+    if option == "조회":
+        coin_price = get_coin_price()
+        embed = discord.Embed(title="조회", description="도지 코인", color=0xC08282)
+        embed.add_field(name="가격", value=f":coin: {coin_price}")
+        await ctx.send(embed=embed)
 
-    else:
+    if option == "매수":
+
+        embed = discord.Embed(
+            title="Preparing", description="preparing", color=0xC08282
+        )
+        await ctx.send(embed=embed)
+
+    if option == "도움":
         embed = discord.Embed(title="도지 코인", value="도움말")
         embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다.")
         await ctx.send(embed=embed)
