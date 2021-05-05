@@ -60,12 +60,10 @@ def check_id(userid):
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    check_bool = True
     sql = "select * from discordapp where UserID=%s;"
     curs.execute(sql, (userid,))
     rows = curs.fetchall()
     if rows:
-        check_bool = False
         user_dic = {
             "username": rows[0][1],
             "level": rows[0][2],
@@ -74,10 +72,10 @@ def check_id(userid):
             "lost_money": rows[0][5],
             "signin_date": rows[0][6],
         }
+        return False, user_dic
     else:
-        check_bool = True
         user_dic = {}
-    return check_bool, user_dic
+        return True, user_dic
 
 
 @bot.event
