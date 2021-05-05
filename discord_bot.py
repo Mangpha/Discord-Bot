@@ -4,12 +4,66 @@ import random
 import requests
 import json
 import os
-from games import join as sql_join
+import pymysql
+from pytz import timezone
+from datetime import datetime
 
 token = os.environ["DISCORD_TOKEN"]
 
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
+
+sql_host = os.environ["SQL_HOST"]
+sql_user = os.environ["SQL_USER"]
+sql_passwd = os.environ["SQL_PASSWD"]
+db_name = os.environ["DB_NAME"]
+con = pymysql.connect(
+    host=sql_host,
+    user=sql_user,
+    password=sql_passwd,
+    charset="utf8",
+    db=db_name,
+    port=3306,
+)
+curs = con.cursor()
+
+
+def signin(userid, username):
+
+    """ Game Signin """
+
+    now = datetime.now(timezone("Asia/Seoul")).strftime("%Y:%m:%d %H:%M:%S")
+    sql = (
+        "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
+        f"values (%s, %s, %s, %s, %s, %s, '{now}');"
+    )
+    curs.execute(sql, (userid, username, 1, 10000, 0, 0))
+    con.commit()
+
+
+def check_id(userid):
+
+    """ Check ID , Get User Data """
+
+    check_bool = True
+    sql = "select * from discordapp where UserID=%s;"
+    curs.execute(sql, userid)
+    con.commit()
+    rows = curs.fetchall()
+    if not (rows):
+        check_bool = True
+        user_dic = {}
+    else:
+        check_bool = False
+        user_dic = {
+            "username": rows[0][1],
+            "level": rows[0][2],
+            "money": rows[0][3],
+            "exp": rows[0][4],
+            "lost_money": rows[0][5],
+            "signin_date": rows[0][6],
+        }
+    return check_bool, user_dic
 
 
 @bot.event
@@ -82,11 +136,11 @@ async def 소라고동님(ctx, *, kwargs):
 async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
-    sql_join.join(UserId, UserName)
-    boolean = sql_join.check_id(UserId)[0]
-    if boolean is False:
+    boolean = check_id(UserId)[0]
+    if boolean is True:
+        signin(UserId, UserName)
         embed = discord.Embed(title="가입완료", description=UserName, color=0xC08282)
-        embed.add_field(name="레벨", value=":one:", inline=True)
+        embed.add_field(name="레벨", value="1", inline=True)
         embed.add_field(name="보유 금액", value=":moneybag: 10000", inline=True)
         embed.add_field(name="경험치", value="0", inline=False)
         await ctx.send(embed=embed)
@@ -98,10 +152,10 @@ async def 가입(ctx):
 @bot.command(help="게임 내 정보확인")
 async def 내정보(ctx):
     UserId = ctx.author.id
-    storage = sql_join.check_id(UserId)
+    storage = check_id(UserId)
     boolean = storage[0]
-    user_info = storage[1]
     if boolean is False:
+        user_info = storage[1]
         username = user_info["username"]
         level = user_info["level"]
         money = user_info["money"]

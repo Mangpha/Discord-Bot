@@ -150,5 +150,8 @@ Thumbs.db
 # profiling data
 .prof
 
+# Testing SQL
+games/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/python
