@@ -203,8 +203,8 @@ async def 내정보(ctx):
 
 
 @bot.command()
-async def 도지(ctx, *args):
-    if args[0] == "조회":
+async def 도지(ctx, args, options):
+    if args == "조회":
         coin_price = get_coin_price()
         embed = discord.Embed(title="도지 코인", description="조회", color=0xC08282)
         embed.add_field(name="가격", value=f":moneybag: {coin_price}")
