@@ -203,7 +203,7 @@ async def 내정보(ctx):
 
 
 @bot.command()
-async def 도지(ctx, option, *, money):
+async def 도지(ctx, option, *, money="0"):
     if option:
         if option == "조회":
             coin_price = get_coin_price()
