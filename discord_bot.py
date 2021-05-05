@@ -62,8 +62,9 @@ def check_id(userid):
     curs = con.cursor()
     sql = "select exists(select * from discordapp where UserID = %s) ;"
     curs.execute(sql, (userid,))
-    isDup = curs.fetchone()[0]
-    if isDup:
+    isDup = curs.fetchall()
+    if isDup[0][0] == 1:
+        # Exist
         return False
     else:
         return True
