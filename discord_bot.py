@@ -39,7 +39,17 @@ def signin(userid, username):
         "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
         f"values (%s, %s, %s, %s, %s, %s, '{now}');"
     )
-    curs.execute(sql, (userid, username, 1, 10000, 0, 0))
+    curs.execute(
+        sql,
+        (
+            userid,
+            username,
+            1,
+            10000,
+            0,
+            0,
+        ),
+    )
     con.commit()
 
 
@@ -51,7 +61,7 @@ def check_id(userid):
     curs = con.cursor()
     check_bool = True
     sql = "select * from discordapp where UserID=%s;"
-    curs.execute(sql, userid)
+    curs.execute(sql, (userid,))
     rows = curs.fetchall()
     if not (rows):
         check_bool = True
