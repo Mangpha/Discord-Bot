@@ -203,19 +203,18 @@ async def 내정보(ctx):
 
 
 @bot.command()
-async def 도지(ctx, args):
-    if args == "조회":
-        coin_price = get_coin_price()
-        embed = discord.Embed(title="도지 코인", description="조회", color=0xC08282)
-        embed.add_field(name="가격", value=f":moneybag: {coin_price}")
+async def 도지(ctx, option, *, args):
+    if option:
+        if option == "조회":
+            coin_price = get_coin_price()
+            embed = discord.Embed(title="도지 코인", description="조회", color=0xC08282)
+            embed.add_field(name="가격", value=f":moneybag: {coin_price}")
+            await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(title="도지 코인", value="도움말")
+        embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다.")
         await ctx.send(embed=embed)
-
-
-@도지.error()
-async def 도지_error(ctx, error):
-    embed = discord.Embed(title="도지 코인", value="도움말")
-    embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다.")
-    await ctx.send(embed=embed)
 
 
 bot.run(token)
