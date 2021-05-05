@@ -4,7 +4,7 @@ import random
 import requests
 import json
 import os
-import pymysql
+import mysql.connector
 from pytz import timezone
 from datetime import datetime
 
@@ -13,25 +13,27 @@ token = os.environ["DISCORD_TOKEN"]
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
 
-sql_host = os.environ["SQL_HOST"]
-sql_user = os.environ["SQL_USER"]
-sql_passwd = os.environ["SQL_PASSWD"]
-db_name = os.environ["DB_NAME"]
-con = pymysql.connect(
-    host=sql_host,
-    user=sql_user,
-    password=sql_passwd,
-    charset="utf8",
-    db=db_name,
-    port=3306,
-)
-curs = con.cursor()
+
+def db_connection():
+    sql_host = os.environ["SQL_HOST"]
+    sql_user = os.environ["SQL_USER"]
+    sql_passwd = os.environ["SQL_PASSWD"]
+    db_name = os.environ["DB_NAME"]
+    db_config = {
+        "host": sql_host,
+        "user": sql_user,
+        "password": sql_passwd,
+        "database": db_name,
+        "port": 3306,
+    }
+    return db_config
 
 
 def signin(userid, username):
 
     """ Game Signin """
-
+    con = mysql.connector.connect(**db_connection())
+    curs = con.cursor()
     now = datetime.now(timezone("Asia/Seoul")).strftime("%Y:%m:%d %H:%M:%S")
     sql = (
         "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
@@ -45,10 +47,11 @@ def check_id(userid):
 
     """ Check ID , Get User Data """
 
+    con = mysql.connector.connect(**db_connection())
+    curs = con.cursor()
     check_bool = True
     sql = "select * from discordapp where UserID=%s;"
     curs.execute(sql, userid)
-    con.commit()
     rows = curs.fetchall()
     if not (rows):
         check_bool = True
