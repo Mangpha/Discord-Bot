@@ -158,8 +158,8 @@ async def 소라고동님(ctx, *, kwargs):
 
 @bot.command(help="게임 가입")
 async def 가입(ctx):
-    UserName = ctx.author.name
-    UserId = ctx.author.id
+    UserName = ctx.message.author.name
+    UserId = ctx.message.author.id
     boolean = check_id(UserId)
     if boolean is False:
         embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
@@ -175,7 +175,7 @@ async def 가입(ctx):
 
 @bot.command(help="게임 내 정보확인")
 async def 내정보(ctx):
-    UserId = ctx.author.id
+    UserId = ctx.message.author.id
     boolean = check_id(UserId)
     if boolean is False:
         user_info = get_user(UserId)
