@@ -114,7 +114,7 @@ async def 내정보(ctx):
         signin_date = user_info["signin_date"]
         embed = discord.Embed(title="유저 정보", description=username, color=0xC08282)
         embed.add_field(name="레벨", value=level, inline=True)
-        embed.add_field(name="보유 금액", value=money, inline=True)
+        embed.add_field(name="보유 금액", value=f":moneybag: {money}", inline=True)
         embed.add_field(name="경험치", value=exp, inline=True)
         embed.add_field(name="잃은 돈", value=lost_money, inline=True)
         embed.add_field(name="가입 시간", value=signin_date, inline=True)
