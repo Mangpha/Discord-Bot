@@ -199,7 +199,9 @@ async def 내정보(ctx):
 
 @bot.command()
 async def testing(ctx):
-    embed = discord.Embed(title=ctx.message.author.id, description=ctx.message.name)
+    embed = discord.Embed(
+        title=ctx.message.author.id, description=ctx.message.author.name
+    )
     await ctx.send(embed=embed)
 
 
