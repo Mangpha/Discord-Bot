@@ -5,6 +5,7 @@ import requests
 import json
 import os
 import mysql.connector
+import pyupbit
 from pytz import timezone
 from datetime import datetime
 
@@ -12,6 +13,10 @@ token = os.environ["DISCORD_TOKEN"]
 
 game = discord.Game("!!help")
 bot = commands.Bot(command_prefix="!!")
+
+
+def get_coin_price():
+    return int(pyupbit.get_current_price("KRW-DOGE"))
 
 
 def db_connection():
@@ -198,11 +203,15 @@ async def 내정보(ctx):
 
 
 @bot.command()
-async def testing(ctx):
-    embed = discord.Embed(
-        title=ctx.message.author.id, description=ctx.message.author.name
-    )
-    await ctx.send(embed=embed)
+async def 도지(ctx, *args):
+    if args[0] == "조회":
+        coin_price = get_coin_price()
+        embed = discord.Embed(title="도지 코인", description="조회", color=0xC08282)
+        embed.add_field(name="가격", value=f":moneybag: {coin_price}")
+
+    else:
+        embed = discord.Embed(title="도지 코인", value="도움말")
+        embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다.")
 
 
 bot.run(token)
