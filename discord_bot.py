@@ -161,7 +161,7 @@ async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
     boolean = check_id(UserId)
-    if boolean == False:
+    if boolean is False:
         embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
         await ctx.send(embed=embed)
     else:
@@ -177,7 +177,7 @@ async def 가입(ctx):
 async def 내정보(ctx):
     UserId = ctx.author.id
     boolean = check_id(UserId)
-    if boolean == False:
+    if boolean is False:
         user_info = get_user(UserId)
         username = user_info["username"]
         level = user_info["level"]
@@ -195,6 +195,12 @@ async def 내정보(ctx):
     else:
         embed = discord.Embed(title="오류", description="가입되지 않은 유저입니다.")
         await ctx.send(embed=embed)
+
+
+@bot.command()
+async def testing(ctx):
+    embed = discord.Embed(title=ctx.message.author.id, description=ctx.message.name)
+    await ctx.send(embed=embed)
 
 
 bot.run(token)
