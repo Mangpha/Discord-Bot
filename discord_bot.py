@@ -64,10 +64,7 @@ def check_id(userid):
     sql = "select * from discordapp where UserID=%s;"
     curs.execute(sql, (userid,))
     rows = curs.fetchall()
-    if not rows:
-        check_bool = True
-        user_dic = {}
-    else:
+    if rows:
         check_bool = False
         user_dic = {
             "username": rows[0][1],
@@ -77,6 +74,9 @@ def check_id(userid):
             "lost_money": rows[0][5],
             "signin_date": rows[0][6],
         }
+    else:
+        check_bool = True
+        user_dic = {}
     return check_bool, user_dic
 
 
