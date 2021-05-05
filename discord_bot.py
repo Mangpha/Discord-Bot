@@ -32,12 +32,13 @@ def db_connection():
 def signin(userid, username):
 
     """ Game Signin """
+
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
     now = datetime.now(timezone("Asia/Seoul")).strftime("%Y:%m:%d %H:%M:%S")
     sql = (
         "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
-        f"values (%s, %s, %s, %s, %s, %s, '{now}')"
+        f"values (%s, %s, %s, %s, %s, %s, '{now}') ;"
     )
     curs.execute(
         sql,
@@ -160,7 +161,7 @@ async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
     boolean = check_id(UserId)
-    if boolean is False:
+    if boolean == False:
         embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
         await ctx.send(embed=embed)
     else:
@@ -176,7 +177,7 @@ async def 가입(ctx):
 async def 내정보(ctx):
     UserId = ctx.author.id
     boolean = check_id(UserId)
-    if boolean is False:
+    if boolean == False:
         user_info = get_user(UserId)
         username = user_info["username"]
         level = user_info["level"]
