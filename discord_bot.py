@@ -38,7 +38,6 @@ def signin(userid, username):
     sql = (
         "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
         f"values (%s, %s, %s, %s, %s, %s, '{now}')"
-        "on duplicate key update UserID=values(UserID);"
     )
     curs.execute(
         sql,
