@@ -65,9 +65,9 @@ def check_id(userid):
     isDup = curs.fetchall()
     if isDup[0][0] == 1:
         # Exist
-        return False
+        return bool(False)
     else:
-        return True
+        return bool(True)
 
 
 def get_user(userid):
@@ -161,15 +161,15 @@ async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
     boolean = check_id(UserId)
-    if boolean is True:
+    if boolean is False:
+        embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
+        await ctx.send(embed=embed)
+    else:
         signin(UserId, UserName)
         embed = discord.Embed(title="가입완료", description=UserName, color=0xC08282)
         embed.add_field(name="레벨", value="1", inline=True)
         embed.add_field(name="보유 금액", value=":moneybag: 10000", inline=True)
         embed.add_field(name="경험치", value="0", inline=False)
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.Embed(title="가입 실패", description="이미 가입된 유저입니다.")
         await ctx.send(embed=embed)
 
 
