@@ -1,8 +1,7 @@
 import requests
 import json
 import os
-
-import APITOKEN
+from games import APITOKEN
 
 api_key = os.getenv("BUNGIE_TOKEN")
 BASE_URL = "https://bungie.net/Platform/Destiny2/"
