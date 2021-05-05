@@ -56,26 +56,37 @@ def signin(userid, username):
 
 def check_id(userid):
 
-    """ Check ID , Get User Data """
+    """ Check ID """
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    sql = "select * from discordapp where UserID=%s;"
+    sql = "select exists(select * from discordapp where UserID = %s) ;"
+    curs.execute(sql, (userid,))
+    isDup = curs.fetchone()[0]
+    if isDup:
+        return False
+    else:
+        return True
+
+
+def get_user(userid):
+
+    """ Get User Data """
+
+    con = mysql.connector.connect(**db_connection())
+    curs = con.cursor()
+    sql = "select * from discordapp where UserID = %s ;"
     curs.execute(sql, (userid,))
     rows = curs.fetchall()
-    if rows:
-        user_dic = {
-            "username": rows[0][1],
-            "level": rows[0][2],
-            "money": rows[0][3],
-            "exp": rows[0][4],
-            "lost_money": rows[0][5],
-            "signin_date": rows[0][6],
-        }
-        return False, user_dic
-    else:
-        user_dic = {}
-        return True, user_dic
+    user_dic = {
+        "username": rows[0][1],
+        "level": rows[0][2],
+        "money": rows[0][3],
+        "exp": rows[0][4],
+        "lost_money": rows[0][5],
+        "signin_date": rows[0][6],
+    }
+    return user_dic
 
 
 @bot.event
@@ -148,7 +159,7 @@ async def 소라고동님(ctx, *, kwargs):
 async def 가입(ctx):
     UserName = ctx.author.name
     UserId = ctx.author.id
-    boolean = check_id(UserId)[0]
+    boolean = check_id(UserId)
     if boolean is True:
         signin(UserId, UserName)
         embed = discord.Embed(title="가입완료", description=UserName, color=0xC08282)
@@ -164,10 +175,9 @@ async def 가입(ctx):
 @bot.command(help="게임 내 정보확인")
 async def 내정보(ctx):
     UserId = ctx.author.id
-    storage = check_id(UserId)
-    boolean = storage[0]
+    boolean = check_id(UserId)
     if boolean is False:
-        user_info = storage[1]
+        user_info = get_user(UserId)
         username = user_info["username"]
         level = user_info["level"]
         money = user_info["money"]
