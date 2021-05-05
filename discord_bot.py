@@ -37,7 +37,8 @@ def signin(userid, username):
     now = datetime.now(timezone("Asia/Seoul")).strftime("%Y:%m:%d %H:%M:%S")
     sql = (
         "insert into discordapp(UserID, UserName, Level, Money, Exp, LostMoney, SigninDate)"
-        f"values (%s, %s, %s, %s, %s, %s, '{now}');"
+        f"values (%s, %s, %s, %s, %s, %s, '{now}')"
+        "on duplicate key update UserID=values(UserID);"
     )
     curs.execute(
         sql,
@@ -63,7 +64,7 @@ def check_id(userid):
     sql = "select * from discordapp where UserID=%s;"
     curs.execute(sql, (userid,))
     rows = curs.fetchall()
-    if not (rows):
+    if not rows:
         check_bool = True
         user_dic = {}
     else:
