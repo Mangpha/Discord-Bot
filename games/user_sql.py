@@ -87,13 +87,10 @@ def get_user_info(userid, column):
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    sql = "select %s from discordapp where UserID = %s ;"
+    sql = f"select {column} from discordapp where UserID = %s ;"
     curs.execute(
         sql,
-        (
-            column,
-            userid,
-        ),
+        (userid,),
     )
     rows = curs.fetchall()
     return rows[0][0]
