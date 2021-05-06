@@ -143,7 +143,7 @@ async def 도지(ctx, option="도움", *, coin=0):
             embed.add_field(name="현재가", value=f":coin: {coin_price}")
             await ctx.send(embed=embed)
 
-        else:
+        if coin != 0 and type(coin) is int:
             result = buy_coin(userid, coin_type, coin)
             if result is False:
                 embed = discord.Embed(
