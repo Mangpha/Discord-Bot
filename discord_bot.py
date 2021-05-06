@@ -139,29 +139,44 @@ async def 도지(ctx, option="도움", *, coin="0"):
 
     if option == "매수":
         if coin == 0:
-            embed = discord.Embed(
-                title="매수", descriptioin="매수량을 입력해주세요", color=0xC08282
-            )
+            embed = discord.Embed(title="매수", description="매수량을 입력해주세요", color=0xC08282)
             embed.add_field(name="현재가", value=f":coin: {coin_price}")
             await ctx.send(embed=embed)
 
         else:
-            buy_coin(userid, coin_type, coin)
-            embed = discord.Embed(title="매수", description="도지 코인", color=0xC08282)
-            embed.add_field(name="현재가", value=f":coin: {coin_price}")
-            embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
-            await ctx.send(embed=embed)
+            result = buy_coin(userid, coin_type, coin)
+            if result is False:
+                embed = discord.Embed(
+                    title="매수", description="현재 보유 금액 부족", color=0xC08282
+                )
+                await ctx.send(embed=embed)
+
+            else:
+                embed = discord.Embed(title="매수", description="도지 코인", color=0xC08282)
+                embed.add_field(name="현재가", value=f":coin: {coin_price}")
+                embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
+                await ctx.send(embed=embed)
 
     if option == "매도":
         embed = discord.Embed(title="Prepare", value="Prepare", color=0xC08282)
         await ctx.send(embed=embed)
 
-    if option == "도움":
-        embed = discord.Embed(title="도지 코인", value="도움말")
+    if option == "내코인":
+        now_coin = get_user_info(userid, "doge")
+        embed = discord.Embed(title="내 코인", description="도지 코인", color=0xC08282)
+        embed.add_field(name="보유 수량", value=f":coin: {now_coin} DOGE 보유중")
+        await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(title="도지 코인", description="도움말")
         embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다")
-        embed.add_field(name="매수", value=f"현재가 :coin: {coin_price}에 매수합니다 (변동 가능성 있음)")
-        embed.add_field(name="매도", value=f"현재가 :coin: {coin_price}에 매도합니다 (변동 가능성 있음)")
-        embed.add_field(name="내코인", value="현재 보유중인 코인을 조회합니다")
+        embed.add_field(
+            name="매수", value=f"현재가 :coin: {coin_price}에 매수합니다 (변동 가능성 있음)", inline=False
+        )
+        embed.add_field(
+            name="매도", value=f"현재가 :coin: {coin_price}에 매도합니다 (변동 가능성 있음)", inline=False
+        )
+        embed.add_field(name="내코인", value="현재 보유중인 코인을 조회합니다", inline=False)
         await ctx.send(embed=embed)
 
 

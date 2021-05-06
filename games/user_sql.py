@@ -131,3 +131,4 @@ def buy_coin(userid, coin_type, b_coin):
             ),
         )
         con.commit()
+        return True
