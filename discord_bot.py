@@ -138,18 +138,18 @@ async def 도지(ctx, option="도움", *, coin="0"):
         await ctx.send(embed=embed)
 
     if option == "매수":
-        if coin != 0:
-            buy_coin(userid, coin_type, coin)
-            embed = discord.Embed(title="매수", description="도지 코인", color=0xC08282)
-            embed.add_field(name="현재가", value=f":coin: {coin_price}")
-            embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
-            await ctx.send(embed=embed)
-
-        else:
+        if coin == 0:
             embed = discord.Embed(
                 title="매수", descriptioin="매수량을 입력해주세요", color=0xC08282
             )
             embed.add_field(name="현재가", value=f":coin: {coin_price}")
+            await ctx.send(embed=embed)
+
+        else:
+            buy_coin(userid, coin_type, coin)
+            embed = discord.Embed(title="매수", description="도지 코인", color=0xC08282)
+            embed.add_field(name="현재가", value=f":coin: {coin_price}")
+            embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
             await ctx.send(embed=embed)
 
     if option == "매도":
