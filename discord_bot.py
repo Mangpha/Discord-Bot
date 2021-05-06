@@ -127,7 +127,7 @@ async def 내정보(ctx):
 
 
 @bot.command(help="도지 코인 조회, 매수, 매도")
-async def 도지(ctx, option="도움", *, coin="0"):
+async def 도지(ctx, option="도움", *, coin=0):
     userid = ctx.message.author.id
     coin_price = get_coin_price()
     coin_type = "doge"
@@ -145,7 +145,7 @@ async def 도지(ctx, option="도움", *, coin="0"):
 
         else:
             result = buy_coin(userid, coin_type, coin)
-            if result is False:
+            if result == False:
                 embed = discord.Embed(
                     title="매수", description="현재 보유 금액 부족", color=0xC08282
                 )
@@ -167,7 +167,7 @@ async def 도지(ctx, option="도움", *, coin="0"):
         embed.add_field(name="보유 수량", value=f":coin: {now_coin} DOGE 보유중")
         await ctx.send(embed=embed)
 
-    else:
+    if option == "도움":
         embed = discord.Embed(title="도지 코인", description="도움말")
         embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다")
         embed.add_field(
