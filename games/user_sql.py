@@ -109,9 +109,9 @@ def buy_coin(userid, coin_type, b_coin):
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    now_money = get_user_info(userid, "money")
-    now_coin = get_user_info(userid, coin_type)
-    coin_price = get_coin_price()
+    now_money = int(get_user_info(userid, "money"))
+    now_coin = int(get_user_info(userid, coin_type))
+    coin_price = int(get_coin_price())
     if now_money < coin_price * b_coin:
         return False
     else:

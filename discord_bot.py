@@ -145,7 +145,7 @@ async def 도지(ctx, option="도움", *, coin=0):
 
         else:
             result = buy_coin(userid, coin_type, coin)
-            if result == False:
+            if result is False:
                 embed = discord.Embed(
                     title="매수", description="현재 보유 금액 부족", color=0xC08282
                 )
