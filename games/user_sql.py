@@ -129,3 +129,40 @@ def buy_coin(userid, coin_type, b_coin):
         )
         con.commit()
         return True
+
+
+def sell_coin(userid, coin_type, b_coin):
+
+    """ Sell Coin: Input Coin Type """
+
+    con = mysql.connector.connect(**db_connection())
+    curs = con.cursor()
+    now_money = int(get_user_info(userid, "money"))
+    now_coin = int(get_user_info(userid, coin_type))
+    coin_price = int(get_coin_price())
+    if now_coin < b_coin:
+        return False
+
+    else:
+        sql = "update discordapp set money=%s+(%s*%s) where (UserID=%s);"
+        curs.execute(
+            sql,
+            (
+                now_money,
+                coin_price,
+                b_coin,
+                userid,
+            ),
+        )
+        con.commit()
+        sql = f"update discordapp set {coin_type}=%s-%s where (UserID=%s);"
+        curs.execute(
+            sql,
+            (
+                now_coin,
+                b_coin,
+                userid,
+            ),
+        )
+        con.commit()
+        return True

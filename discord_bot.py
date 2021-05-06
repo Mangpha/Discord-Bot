@@ -11,6 +11,7 @@ from games.user_sql import (
     get_user_info,
     get_coin_price,
     buy_coin,
+    sell_coin,
 )
 
 token = os.environ["DISCORD_TOKEN"]
@@ -118,7 +119,7 @@ async def 내정보(ctx):
         embed.add_field(name="레벨", value=level, inline=True)
         embed.add_field(name="보유 금액", value=f":moneybag: {money}", inline=True)
         embed.add_field(name="경험치", value=exp, inline=True)
-        embed.add_field(name="잃은 돈", value=lost_money, inline=True)
+        embed.add_field(name="잃은 돈(코인 제외)", value=lost_money, inline=True)
         embed.add_field(name="가입 시간", value=signin_date, inline=True)
         await ctx.send(embed=embed)
     else:
@@ -131,52 +132,89 @@ async def 도지(ctx, option="도움", *, coin=0):
     userid = ctx.message.author.id
     coin_price = get_coin_price()
     coin_type = "doge"
-
-    if option == "조회":
-        embed = discord.Embed(title="조회", description="도지 코인", color=0xC08282)
-        embed.add_field(name="가격", value=f":coin: {coin_price}")
-        await ctx.send(embed=embed)
-
-    if option == "매수":
-        if coin == 0:
-            embed = discord.Embed(title="매수", description="매수량을 입력해주세요", color=0xC08282)
-            embed.add_field(name="현재가", value=f":coin: {coin_price}")
+    boolean = check_id(userid)
+    if boolean is True:
+        if option == "조회":
+            embed = discord.Embed(title="조회", description="도지 코인", color=0xC08282)
+            embed.add_field(name="가격", value=f":coin: {coin_price}")
             await ctx.send(embed=embed)
 
-        if coin != 0 and type(coin) is int:
-            result = buy_coin(userid, coin_type, coin)
-            if result is False:
+        if option == "매수":
+            if coin == 0:
                 embed = discord.Embed(
-                    title="매수", description="현재 보유 금액 부족", color=0xC08282
+                    title="매수", description="매수량을 입력해주세요", color=0xC08282
                 )
-                await ctx.send(embed=embed)
-
-            else:
-                embed = discord.Embed(title="매수", description="도지 코인", color=0xC08282)
                 embed.add_field(name="현재가", value=f":coin: {coin_price}")
-                embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
                 await ctx.send(embed=embed)
 
-    if option == "매도":
-        embed = discord.Embed(title="Prepare", value="Prepare", color=0xC08282)
-        await ctx.send(embed=embed)
+            if coin != 0 and type(coin) is int:
+                result = buy_coin(userid, coin_type, coin)
+                if result is False:
+                    embed = discord.Embed(
+                        title="매수", description="현재 보유 금액 부족", color=0xC08282
+                    )
+                    await ctx.send(embed=embed)
 
-    if option == "내코인":
-        now_coin = get_user_info(userid, "doge")
-        embed = discord.Embed(title="내 코인", description="도지 코인", color=0xC08282)
-        embed.add_field(name="보유 수량", value=f":coin: {now_coin} DOGE 보유중")
-        await ctx.send(embed=embed)
+                else:
+                    embed = discord.Embed(
+                        title="매수", description="도지 코인", color=0xC08282
+                    )
+                    embed.add_field(name="현재가", value=f":coin: {coin_price}")
+                    embed.add_field(name="매수 완료", value=f":coin: {coin} DOGE 구매완료")
+                    await ctx.send(embed=embed)
 
-    if option == "도움":
-        embed = discord.Embed(title="도지 코인", description="도움말")
-        embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다")
-        embed.add_field(
-            name="매수", value=f"현재가 :coin: {coin_price}에 매수합니다 (변동 가능성 있음)", inline=False
+        if option == "매도":
+            if coin == 0:
+                embed = discord.Embed(
+                    title="매도", description="매도량을 입력해주세요", color=0xC08282
+                )
+                embed.add_field(name="현재가", value=f":coin: {coin_price}")
+                await ctx.send(embed=embed)
+
+            if coin != 0 and type(coin) is int:
+                result = sell_coin(userid, coin_type, coin)
+                if result is False:
+                    embed = discord.Embed(
+                        title="매도",
+                        description="매도하려는 수량이 보유 수량보다 적거나 없습니다",
+                        color=0xC08282,
+                    )
+                    await ctx.send(embed=embed)
+
+                else:
+                    embed = discord.Embed(
+                        title="매도", description="도지 코인", color=0xC08282
+                    )
+                    embed.add_field(name="현재가", value=f":coin: {coin_price}")
+                    embed.add_field(name="매도 완료", value=f":coin: {coin} DOGE 판매완료")
+                    await ctx.send(embed=embed)
+
+        if option == "내코인":
+            now_coin = get_user_info(userid, "doge")
+            embed = discord.Embed(title="내 코인", description="도지 코인", color=0xC08282)
+            embed.add_field(name="보유 수량", value=f":coin: {now_coin} DOGE 보유중")
+            await ctx.send(embed=embed)
+
+        if option == "도움":
+            embed = discord.Embed(title="도지 코인", description="도움말")
+            embed.add_field(name="조회", value="현재 도지 코인의 가격을 조회합니다")
+            embed.add_field(
+                name="매수",
+                value=f"현재가 :coin: {coin_price}에 매수합니다 (변동 가능성 있음)",
+                inline=False,
+            )
+            embed.add_field(
+                name="매도",
+                value=f"현재가 :coin: {coin_price}에 매도합니다 (변동 가능성 있음)",
+                inline=False,
+            )
+            embed.add_field(name="내코인", value="현재 보유중인 코인을 조회합니다", inline=False)
+            await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(
+            title="가입 필요", description="가입 후에 이용가능합니다", color=0xC08282
         )
-        embed.add_field(
-            name="매도", value=f"현재가 :coin: {coin_price}에 매도합니다 (변동 가능성 있음)", inline=False
-        )
-        embed.add_field(name="내코인", value="현재 보유중인 코인을 조회합니다", inline=False)
         await ctx.send(embed=embed)
 
 
