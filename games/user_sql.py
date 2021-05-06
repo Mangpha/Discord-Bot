@@ -96,8 +96,8 @@ def get_user_info(userid, column):
     return rows[0][0]
 
 
-def get_coin_price():
-    return int(pyupbit.get_current_price("KRW-DOGE"))
+def get_coin_doge():
+    return pyupbit.get_current_price("KRW-DOGE")
 
 
 def buy_coin(userid, coin_type, b_coin):
@@ -106,9 +106,10 @@ def buy_coin(userid, coin_type, b_coin):
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    now_money = int(get_user_info(userid, "money"))
+    now_money = float(get_user_info(userid, "money"))
     now_coin = int(get_user_info(userid, coin_type))
-    coin_price = int(get_coin_price())
+    if coin_type == "doge":
+        coin_price = float(get_coin_doge())
     if now_money < coin_price * b_coin:
         return False
     else:
@@ -137,9 +138,10 @@ def sell_coin(userid, coin_type, b_coin):
 
     con = mysql.connector.connect(**db_connection())
     curs = con.cursor()
-    now_money = int(get_user_info(userid, "money"))
+    now_money = float(get_user_info(userid, "money"))
     now_coin = int(get_user_info(userid, coin_type))
-    coin_price = int(get_coin_price())
+    if coin_type == "doge":
+        coin_price = float(get_coin_doge())
     if now_coin < b_coin:
         return False
 

@@ -9,7 +9,7 @@ from games.user_sql import (
     check_id,
     get_user,
     get_user_info,
-    get_coin_price,
+    get_coin_doge,
     buy_coin,
     sell_coin,
 )
@@ -130,7 +130,7 @@ async def 내정보(ctx):
 @bot.command(help="도지 코인 조회, 매수, 매도")
 async def 도지(ctx, option="도움", *, coin=0):
     userid = ctx.message.author.id
-    coin_price = get_coin_price()
+    coin_price = get_coin_doge()
     coin_type = "doge"
     boolean = check_id(userid)
     if boolean is False:
