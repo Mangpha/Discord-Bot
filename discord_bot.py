@@ -133,7 +133,7 @@ async def 도지(ctx, option="도움", *, coin=0):
     coin_price = get_coin_price()
     coin_type = "doge"
     boolean = check_id(userid)
-    if boolean is True:
+    if boolean is False:
         if option == "조회":
             embed = discord.Embed(title="조회", description="도지 코인", color=0xC08282)
             embed.add_field(name="가격", value=f":coin: {coin_price}")
