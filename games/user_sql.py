@@ -100,6 +100,10 @@ def get_coin_doge():
     return pyupbit.get_current_price("KRW-DOGE")
 
 
+def get_coin_btt():
+    return pyupbit.get_current_price("KRW-BTT")
+
+
 def buy_coin(userid, coin_type, b_coin):
 
     """ Buy Coin : input Coin Type """
@@ -108,8 +112,12 @@ def buy_coin(userid, coin_type, b_coin):
     curs = con.cursor()
     now_money = float(get_user_info(userid, "money"))
     now_coin = int(get_user_info(userid, coin_type))
+
     if coin_type == "doge":
         coin_price = float(get_coin_doge())
+    if coin_type == "btt":
+        coin_price = float(get_coin_btt())
+
     if now_money < coin_price * b_coin:
         return False
     else:
@@ -140,8 +148,12 @@ def sell_coin(userid, coin_type, b_coin):
     curs = con.cursor()
     now_money = float(get_user_info(userid, "money"))
     now_coin = int(get_user_info(userid, coin_type))
+
     if coin_type == "doge":
         coin_price = float(get_coin_doge())
+    if coin_type == "btt":
+        coin_price = float(get_coin_btt())
+
     if now_coin < b_coin:
         return False
 
