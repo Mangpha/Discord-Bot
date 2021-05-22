@@ -4,6 +4,7 @@ import random
 import requests
 import json
 import os
+from games import games
 from games.user_sql import (
     signin,
     check_id,
@@ -301,6 +302,30 @@ async def 비트(ctx, option="도움", *, coin=0):
                 inline=False,
             )
             embed.add_field(name="내코인", value="현재 보유중인 코인을 조회합니다", inline=False)
+            await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(
+            title="가입 필요", description="가입 후에 이용가능합니다", color=0xC08282
+        )
+        await ctx.send(embed=embed)
+
+
+@bot.command(help="로또 번호 생성, 구매(자동, 수동, 반자동)")
+async def 로또(ctx, option="도움", *, user_lotto=[]):
+    userid = ctx.message.author.id
+    boolean = check_id(userid)
+    if boolean is False:
+        if option == "도움":
+            embed = discord.Embed(title="로또 번호", description="도움말")
+            embed.add_field(name="생성", value="로또 번호를 생성합니다")
+            embed.add_field(name="구매", value="500 :moneybag: 에 로또를 구매합니다")
+            await ctx.send(embed=embed)
+
+        if option == "생성":
+            embed = discord.Embed(
+                title="번호 생성", description=", ".join(list(map(str, games.make_lotto())))
+            )
             await ctx.send(embed=embed)
 
     else:
