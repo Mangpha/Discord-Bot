@@ -318,8 +318,8 @@ async def 로또(ctx, option="도움", *, user_lotto=[]):
     if boolean is False:
         if option == "도움":
             embed = discord.Embed(title="로또 번호", description="도움말")
-            embed.add_field(name="생성", value="로또 번호를 생성합니다")
-            embed.add_field(name="구매", value="500 :moneybag: 에 로또를 구매합니다")
+            embed.add_field(name="생성", value="로또 번호를 생성합니다", inline=False)
+            embed.add_field(name="구매", value="500 :moneybag: 에 로또를 구매합니다", inline=False)
             await ctx.send(embed=embed)
 
         if option == "생성":
