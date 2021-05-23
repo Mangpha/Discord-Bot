@@ -56,5 +56,6 @@ def check_lotto(user, bots, userid):
         return 100
 
     else:
-        user_sql.set_data(userid, "LostMoney", 500)
+        lost_money = user_sql.get_user_info(userid, "LostMoney")
+        user_sql.set_data(userid, "LostMoney", 500 + int(lost_money))
         return 0
