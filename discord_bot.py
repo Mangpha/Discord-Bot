@@ -330,7 +330,7 @@ async def 로또(ctx, option="도움", *, user_lotto=[]):
             await ctx.send(embed=embed)
 
         if option == "구매":
-            user_lotto = games.users_lotto(user_lotto)
+            user_lotto = games.users_lotto(list(map(int, user_lotto)))
             bots_lotto = games.make_lotto()
             if user_lotto is False:
                 embed = discord.Embed(title="오류", description="올바른 숫자를 입력해주세요")
@@ -338,7 +338,9 @@ async def 로또(ctx, option="도움", *, user_lotto=[]):
 
             else:
                 lotto_check = games.check_lotto(user_lotto, bots_lotto, userid)
-                user_money = float(get_user_info(userid, "money")) + (500 * lotto_check)
+                user_money = (float(get_user_info(userid, "money")) - 500) + (
+                    500 * lotto_check
+                )
                 set_data(userid, "money", user_money)
                 embed = discord.Embed(title="구매 결과", description="유저 번호, 봇 추첨 번호 비교")
                 embed.add_field(name="유저 번호", value=user_lotto, inline=False)
