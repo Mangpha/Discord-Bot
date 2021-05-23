@@ -338,51 +338,57 @@ async def 로또(ctx, option="도움", *, user_lotto=""):
 
             else:
                 lotto_check = games.check_lotto(user_lotto, bots_lotto, userid)
-                user_money = (float(get_user_info(userid, "money")) - 500) + (
-                    500 * lotto_check
-                )
-                set_data(userid, "money", user_money)
-                embed = discord.Embed(title="구매 결과", description="유저 번호, 봇 추첨 번호 비교")
-                embed.add_field(
-                    name="유저 번호",
-                    value=", ".join(list(map(str, user_lotto))),
-                    inline=False,
-                )
-                embed.add_field(
-                    name="봇 추첨 번호",
-                    value=", ".join(list(map(str, bots_lotto))),
-                    inline=False,
-                )
-                # 5
-                if lotto_check == 1:
-                    embed.add_field(
-                        name="결과", value="5등 (1배, 500 :moneybag:)", inline=False
-                    )
-                # 4
-                if lotto_check == 2:
-                    embed.add_field(
-                        name="결과", value="4등 (2배, 1000 :moneybag:)", inline=False
-                    )
-                # 3
-                if lotto_check == 5:
-                    embed.add_field(
-                        name="결과", value="3등 (5배, 2500 :moneybag:)", inline=False
-                    )
-                # 2
-                if lotto_check == 10:
-                    embed.add_field(
-                        name="결과", value="2등 (10배, 5000 :moneybag:)", inline=False
-                    )
-                # 1
-                if lotto_check == 100:
-                    embed.add_field(
-                        name="결과", value="1등 (100배, 50000 :moneybag:)", inline=False
-                    )
-                # else
-                if lotto_check == 0:
-                    embed.add_field(name="결과", value="낙첨")
+                user_money = float(get_user_info(userid, "money"))
+                if user_money < 500:
+                    embed = discord.Embed(title="오류", description="잔액이 부족합니다.")
+                    await ctx.send(embed=embed)
 
-                await ctx.send(embed=embed)
+                else:
+                    user_money = (user_money - 500) + (500 * lotto_check)
+                    set_data(userid, "money", user_money)
+                    embed = discord.Embed(
+                        title="구매 결과", description="유저 번호, 봇 추첨 번호 비교"
+                    )
+                    embed.add_field(
+                        name="유저 번호",
+                        value=", ".join(list(map(str, user_lotto))),
+                        inline=False,
+                    )
+                    embed.add_field(
+                        name="봇 추첨 번호",
+                        value=", ".join(list(map(str, bots_lotto))),
+                        inline=False,
+                    )
+                    # 5
+                    if lotto_check == 1:
+                        embed.add_field(
+                            name="결과", value="5등 (1배, 500 :moneybag:)", inline=False
+                        )
+                    # 4
+                    if lotto_check == 2:
+                        embed.add_field(
+                            name="결과", value="4등 (2배, 1000 :moneybag:)", inline=False
+                        )
+                    # 3
+                    if lotto_check == 5:
+                        embed.add_field(
+                            name="결과", value="3등 (5배, 2500 :moneybag:)", inline=False
+                        )
+                    # 2
+                    if lotto_check == 10:
+                        embed.add_field(
+                            name="결과", value="2등 (10배, 5000 :moneybag:)", inline=False
+                        )
+                    # 1
+                    if lotto_check == 100:
+                        embed.add_field(
+                            name="결과", value="1등 (100배, 50000 :moneybag:)", inline=False
+                        )
+                    # else
+                    if lotto_check == 0:
+                        embed.add_field(name="결과", value="낙첨")
+
+                    await ctx.send(embed=embed)
 
     else:
         embed = discord.Embed(
