@@ -355,19 +355,29 @@ async def 로또(ctx, option="도움", *, user_lotto=""):
                 )
                 # 5
                 if lotto_check == 1:
-                    embed.add_field(name="결과", value="5등", inline=False)
+                    embed.add_field(
+                        name="결과", value="5등 (1배, 500 :moneybag:)", inline=False
+                    )
                 # 4
                 if lotto_check == 2:
-                    embed.add_field(name="결과", value="4등", inline=False)
+                    embed.add_field(
+                        name="결과", value="4등 (2배, 1000 :moneybag:)", inline=False
+                    )
                 # 3
                 if lotto_check == 5:
-                    embed.add_field(name="결과", value="3등", inline=False)
+                    embed.add_field(
+                        name="결과", value="3등 (5배, 2500 :moneybag:)", inline=False
+                    )
                 # 2
                 if lotto_check == 10:
-                    embed.add_field(name="결과", value="2등", inline=False)
+                    embed.add_field(
+                        name="결과", value="2등 (10배, 5000 :moneybag:)", inline=False
+                    )
                 # 1
                 if lotto_check == 100:
-                    embed.add_field(name="결과", value="1등", inline=False)
+                    embed.add_field(
+                        name="결과", value="1등 (100배, 50000 :moneybag:)", inline=False
+                    )
                 # else
                 if lotto_check == 0:
                     embed.add_field(name="결과", value="낙첨")
