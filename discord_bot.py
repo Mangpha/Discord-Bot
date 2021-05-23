@@ -343,8 +343,16 @@ async def 로또(ctx, option="도움", *, user_lotto=[]):
                 )
                 set_data(userid, "money", user_money)
                 embed = discord.Embed(title="구매 결과", description="유저 번호, 봇 추첨 번호 비교")
-                embed.add_field(name="유저 번호", value=user_lotto, inline=False)
-                embed.add_field(name="봇 추첨 번호", value=bots_lotto, inline=False)
+                embed.add_field(
+                    name="유저 번호",
+                    value=", ".join(list(map(str, user_lotto))),
+                    inline=False,
+                )
+                embed.add_field(
+                    name="봇 추첨 번호",
+                    value=", ".join(list(map(str, bots_lotto))),
+                    inline=False,
+                )
                 # 5
                 if lotto_check == 1:
                     embed.add_field(name="결과", value="5등", inline=False)
