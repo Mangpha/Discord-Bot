@@ -180,3 +180,14 @@ def sell_coin(userid, coin_type, b_coin):
         )
         con.commit()
         return True
+
+
+def set_data(userid, column, data):
+
+    """ Set User's Data """
+
+    con = mysql.connector.connect(**db_connection())
+    curs = con.cursor()
+    sql = f"update discordapp set {column}={data} where (UserID={userid});"
+    curs.execute(sql)
+    con.commit()
