@@ -313,7 +313,7 @@ async def 비트(ctx, option="도움", *, coin=0):
 
 
 @bot.command(help="복권 번호 생성, 구매(자동, 수동, 반자동)")
-async def 로또(ctx, option="도움", *, user_lotto=[]):
+async def 로또(ctx, option="도움", *, user_lotto=""):
     userid = ctx.message.author.id
     boolean = check_id(userid)
     if boolean is False:
