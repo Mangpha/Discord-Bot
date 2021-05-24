@@ -122,7 +122,7 @@ async def 내정보(ctx):
         embed.add_field(name="레벨", value=level, inline=True)
         embed.add_field(name="보유 금액", value=f":moneybag: {money}", inline=True)
         embed.add_field(name="경험치", value=exp, inline=True)
-        embed.add_field(name="잃은 돈(코인 제외)", value=lost_money, inline=True)
+        embed.add_field(name="사용한 금액(코인 제외)", value=lost_money, inline=True)
         embed.add_field(name="가입 시간", value=signin_date, inline=True)
         await ctx.send(embed=embed)
     else:
