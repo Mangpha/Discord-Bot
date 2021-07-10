@@ -403,8 +403,8 @@ async def 오늘은(ctx):
     base = ["주간", "주간", "야간", "야간", "휴식", "휴식"]
     base_date = datetime(2021, 7, 10, 0, 0, 0)
     current_time = datetime.now()
-    embed = discord.Embed(title="기준 날짜", description="2021년 07월 10일", color=0xC08282)
-    index = int((current_time - base_date).days)
+    embed = discord.Embed(title="기준 날짜", description=base_date, color=0xC08282)
+    index = int((current_time.day - base_date.day))
     if index < 6:
         embed.add_field(
             name="오늘 날짜",
