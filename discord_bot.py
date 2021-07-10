@@ -406,7 +406,7 @@ async def 오늘은(ctx):
     embed = discord.Embed(title="기준 날짜", description="기준 날짜", color=0xC08282)
     embed.add_field(
         name="오늘 날짜",
-        value=f"결과 값 : {base[(current_time - base_date).days / len(base)]}",
+        value=f"결과 값 : {base[int(current_time - base_date).days / len(base)]}",
     )
     await ctx.send(embed=embed)
 
