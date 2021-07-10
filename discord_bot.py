@@ -1,3 +1,4 @@
+from datetime import datetime
 import discord
 from discord.ext import commands
 import random
@@ -395,6 +396,19 @@ async def 로또(ctx, option="도움", *, user_lotto=""):
             title="가입 필요", description="가입 후에 이용가능합니다", color=0xC08282
         )
         await ctx.send(embed=embed)
+
+
+@bot.command(help="테스트 디스코드 명령어")
+async def 오늘은(ctx):
+    base = ["주간", "주간", "야간", "야간", "휴식", "휴식"]
+    base_date = datetime(2021, 7, 10, 0, 0, 0)
+    current_time = datetime.now()
+    embed = discord.Embed(title="기준 날짜", description="기준 날짜", color=0xC08282)
+    embed.add_field(
+        name="오늘 날짜",
+        value=f"결과 값 : {base[(current_time - base_date).days / len(base)]}",
+    )
+    await ctx.send(embed=embed)
 
 
 bot.run(token)
