@@ -401,7 +401,7 @@ async def 로또(ctx, option="도움", *, user_lotto=""):
 @bot.command(help="테스트 디스코드 명령어")
 async def 오늘은(ctx):
     base = ["주간", "주간", "야간", "야간", "휴식", "휴식"]
-    base_date = datetime(2021, 7, 10, 0, 0, 0)
+    base_date = datetime(2021, 7, 11, 0, 0, 0)
     current_time = datetime.now()
     embed = discord.Embed(title="기준 날짜", description=base_date, color=0xC08282)
     index = int((current_time.day - base_date.day))
